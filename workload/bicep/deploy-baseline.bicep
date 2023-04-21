@@ -1365,17 +1365,17 @@ module postDeploymentTempResourcesCleanUp './modules/postDeploymentTempResources
         scriptFile: varPostDeploymentTempResuorcesCleanUpScript
         scriptUri: varPostDeploymentTempResuorcesCleanUpScriptUri
         azureCloudName: varAzureCloudName
-        csAgentPackageLocation: varTempResourcesCleanUpDscAgentPackageLocation
+        //csAgentPackageLocation: varTempResourcesCleanUpDscAgentPackageLocation
         subscriptionId: avdWorkloadSubsId
         serviceObjectsRgName: varServiceObjectsRgName
-        computeObjectsRgName: varComputeObjectsRgName
-        storageObjectsRgName: varStorageObjectsRgName
-        networkObjectsRgName: varNetworkObjectsRgName
-        monitoringObjectsRgName: varMonitoringRgName
+        //computeObjectsRgName: varComputeObjectsRgName
+        //storageObjectsRgName: varStorageObjectsRgName
+        //networkObjectsRgName: varNetworkObjectsRgName
+        //monitoringObjectsRgName: varMonitoringRgName
         managementVmName: varManagementVmName
         deleteResources: removePostDeploymentTempResources
         time: time
-        tags: createResourceTags ? union(varAllResourceTags,varAvdCostManagementParentResourceTag) : varAvdCostManagementParentResourceTag
+        //tags: createResourceTags ? union(varAllResourceTags,varAvdCostManagementParentResourceTag) : varAvdCostManagementParentResourceTag
     }
     dependsOn: [
         //sessionHosts
