@@ -54,7 +54,7 @@ var varPostDeploymentTempResuorcesCleanUpScriptArgs = '-deleteResources ${delete
 
 // Clean up deployment temporary resources.
 resource postDeploymentTempResourcesCleanUp 'Microsoft.Compute/virtualMachines/extensions@2022-08-01' = {
-  name: '${managementVmName}/AzureFilesDomainJoin'
+  name: '${managementVmName}/DeploymentCleanUp'
   location: location
   properties: {
     publisher: 'Microsoft.Compute'
@@ -66,7 +66,6 @@ resource postDeploymentTempResourcesCleanUp 'Microsoft.Compute/virtualMachines/e
         //'${_artifactsLocation}Set-SessionHostConfiguration.ps1${_artifactsLocationSasToken}'
         '${scriptUri}'
       ]
-      timestamp: time
     }
     protectedSettings: {
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${scriptFile} ${varPostDeploymentTempResuorcesCleanUpScriptArgs}'
