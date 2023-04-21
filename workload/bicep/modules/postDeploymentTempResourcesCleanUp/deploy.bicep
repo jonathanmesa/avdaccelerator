@@ -23,9 +23,6 @@ param deleteResources bool
 @description('Script file name.')
 param scriptFile string
 
-@description('DSC package location.')
-param csAgentPackageLocation string
-
 @description('Subscription ID.')
 param subscriptionId string
 

@@ -35,7 +35,33 @@ param (
         [ValidateNotNullOrEmpty()]
         [string] $managementVmName
 )
-        
+
+##############################################################
+#  Functions
+##############################################################
+<#
+function Get-WebFile
+{
+    param(
+        [parameter(Mandatory)]
+        [string]$FileName,
+
+        [parameter(Mandatory)]
+        [string]$URL
+    )
+    $Counter = 0
+    do
+    {
+        Invoke-WebRequest -Uri $URL -OutFile $FileName -ErrorAction 'SilentlyContinue'
+        if($Counter -gt 0)
+        {
+            Start-Sleep -Seconds 30
+        }
+        $Counter++
+    }
+    until((Test-Path $FileName) -or $Counter -eq 9)
+}
+#>
 try 
 {
     ##############################################################
@@ -43,6 +69,15 @@ try
     ##############################################################
     if($deleteResources -eq 'true')
     {
+        Get-WebFile -FileName $BootInstaller -URL $
+        Start-Process -FilePath 'msiexec.exe' -ArgumentList "/i $BootInstaller /quiet /qn /norestart /passive" -Wait -Passthru
+        Write-Log -Message 'Installed AVD Bootloader' -Type 'INFO'
+        Start-Sleep -Seconds 5
+
+
+
+
+
         Select-AzSubscription -SubscriptionId $subscriptionId
         Remove-AzVM -Name $managementVmName -ResourceGroupName $serviceObjectsRgName -Force
     }
