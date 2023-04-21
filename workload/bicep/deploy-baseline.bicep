@@ -1304,7 +1304,6 @@ module msixStorageAzureFiles './modules/storageAzureFiles/deploy.bicep' = if (va
 module sessionHosts './modules/avdSessionHosts/deploy.bicep' = if (avdDeploySessionHosts) {
     name: 'Session-Hosts-${time}'
     params: {
-
         avdAgentPackageLocation: varAvdAgentPackageLocation
         computeTimeZone: varTimeZones[avdSessionHostLocation]
         applicationSecurityGroupResourceId: createAvdVnet ? '${networking.outputs.applicationSecurityGroupResourceId}' : ''
@@ -1351,7 +1350,6 @@ module sessionHosts './modules/avdSessionHosts/deploy.bicep' = if (avdDeploySess
         diagnosticLogsRetentionInDays: avdAlaWorkspaceDataRetention
     }
     dependsOn: [
-        fslogixStorageAzureFiles
         baselineResourceGroups
         networking
         wrklKeyVault
@@ -1359,30 +1357,32 @@ module sessionHosts './modules/avdSessionHosts/deploy.bicep' = if (avdDeploySess
 }
 
 // Post deployment resources clean up.
-module addShareToDomainScript './modules/postDeploymentTempResourcesCleanUp/deploy.bicep' = if (removePostDeploymentTempResources)  {
+module postDeploymentTempResourcesCleanUp './modules/postDeploymentTempResourcesCleanUp/deploy.bicep' = if (removePostDeploymentTempResources)  {
     scope: resourceGroup('${avdWorkloadSubsId}', '${varServiceObjectsRgName}')
     name: 'CleanUp-Temp-Resources-${time}'
     params: {
         location: avdSessionHostLocation
-        managementVmName: varManagementVmName
         scriptFile: varPostDeploymentTempResuorcesCleanUpScript
-        //scriptArguments: varPostDeploymentTempResuorcesCleanUpScriptArgs
-        baseScriptUri: varPostDeploymentTempResuorcesCleanUpScriptUri
+        scriptUri: varPostDeploymentTempResuorcesCleanUpScriptUri
         azureCloudName: varAzureCloudName
-        dscAgentPackageLocation: varTempResourcesCleanUpDscAgentPackageLocation
+        csAgentPackageLocation: varTempResourcesCleanUpDscAgentPackageLocation
         subscriptionId: avdWorkloadSubsId
         serviceObjectsRgName: varServiceObjectsRgName
         computeObjectsRgName: varComputeObjectsRgName
         storageObjectsRgName: varStorageObjectsRgName
         networkObjectsRgName: varNetworkObjectsRgName
         monitoringObjectsRgName: varMonitoringRgName
+        managementVmName: varManagementVmName
+        deleteResources: removePostDeploymentTempResources
+        time: time
+        tags: createResourceTags ? union(varAllResourceTags,varAvdCostManagementParentResourceTag) : varAvdCostManagementParentResourceTag
     }
     dependsOn: [
-        sessionHosts
+        //sessionHosts
         msixStorageAzureFiles
         fslogixStorageAzureFiles
-        managementPLane
-        networking
+        //managementPLane
+        //networking
     ]
 }
 

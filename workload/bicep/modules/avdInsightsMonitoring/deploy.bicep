@@ -119,5 +119,7 @@ module deployMonitoringEventsPerformanceSettings './.bicep/monitoringEventsPerfo
 // =========== //
 // Outputs //
 // =========== //
+
 output avdAlaWorkspaceResourceId string = deployAlaWorkspace ? alaWorkspace.outputs.resourceId : alaWorkspaceId
 output avdAlaWorkspaceId string = deployAlaWorkspace ? alaWorkspace.outputs.logAnalyticsWorkspaceId : alaWorkspaceId // may need to call on existing LGA to get workspace guid // We should be safe to remove this one as CARML modules use the resource ID instead
+output alaWorkspaceWaitDeploymentScriptName string = alaWorkspaceWait.outputs.name

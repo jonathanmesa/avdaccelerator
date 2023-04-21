@@ -415,3 +415,10 @@ module addAvdHostsToHostPool './registerSessionHostsOnHopstPool.bicep' = [for i 
     ]
 }]
 
+// =========== //
+// Outputs //
+// =========== //
+
+output sessionHostsWaitDeploymentScriptName string = sessionHostsWait.outputs.name
+output antimalwareExtensionWaitDeploymentScriptName string = antimalwareExtensionWait.outputs.name
+output sessionHostsMonitoringWaitDeploymentScriptName string = sessionHostsMonitoringWait.outputs.name
