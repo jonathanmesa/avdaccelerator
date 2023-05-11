@@ -38,7 +38,7 @@ param time string = utcNow()
 // =========== //
 
 // Resource group if new Log Analytics space is required
-module baselineMonitoringResourceGroup '../../../../carml/1.3.0/Microsoft.Resources/resourceGroups/deploy.bicep' = if (deployAlaWorkspace) {
+module baselineMonitoringResourceGroup '../../../../carml/1.4.0/Resources/resourceGroups/main.bicep' = if (deployAlaWorkspace) {
   scope: subscription(workloadSubsId)
   name: '${monitoringRgName}-${time}'
   params: {
@@ -50,7 +50,7 @@ module baselineMonitoringResourceGroup '../../../../carml/1.3.0/Microsoft.Resour
 }
 
 // Azure log analytics workspace.
-module alaWorkspace '../../../../carml/1.3.0/Microsoft.OperationalInsights/workspaces/deploy.bicep' = if (deployAlaWorkspace) {
+module alaWorkspace '../../../../carml/1.4.0/OperationalInsights/workspaces/main.bicep' = if (deployAlaWorkspace) {
   scope: resourceGroup('${workloadSubsId}', '${monitoringRgName}')
   name: 'Log-Analytics-Workspace-${time}'
   params: {
@@ -66,7 +66,7 @@ module alaWorkspace '../../../../carml/1.3.0/Microsoft.OperationalInsights/works
 }
 
 // Introduce Wait after log analitics workspace creation.
-module alaWorkspaceWait '../../../../carml/1.3.0/Microsoft.Resources/deploymentScripts/deploy.bicep' = if (deployAlaWorkspace) {
+module alaWorkspaceWait '../../../../carml/1.4.0/Resources/deploymentScripts/main.bicep' = if (deployAlaWorkspace) {
   scope: resourceGroup('${workloadSubsId}', '${monitoringRgName}')
   name: 'ALA-Workspace-Wait-${time}'
   params: {

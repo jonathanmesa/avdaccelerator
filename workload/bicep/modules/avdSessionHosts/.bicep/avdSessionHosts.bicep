@@ -154,8 +154,9 @@ resource wrklKeyVaultget 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing
     scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
 }
 
+
 // Session hosts.
-module sessionHosts '../../../../../carml/1.3.0/Microsoft.Compute/virtualMachines/deploy.bicep' = [for i in range(1, sessionHostsCount): {
+module sessionHosts '../../../../../carml/1.4.0/Compute/virtualMachines/main.bicep' = [for i in range(1, sessionHostsCount): {
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     name: 'Session-Host-${padLeft((i + sessionHostCountIndex), 3, '0')}-${time}'
     params: {
@@ -166,7 +167,7 @@ module sessionHosts '../../../../../carml/1.3.0/Microsoft.Compute/virtualMachine
             '${storageManagedIdentityResourceId}': {}
         } : {}
         systemAssignedIdentity: (identityServiceProvider == 'AAD') ? true: false
-        availabilityZone: useAvailabilityZones ? take(skip(varAllAvailabilityZones, i % length(varAllAvailabilityZones)), 1) : []
+        availabilityZone: useAvailabilityZones ? any(i % 3 + 1) : 0
         encryptionAtHost: encryptionAtHost
         availabilitySetResourceId: useAvailabilityZones ? '' : '/subscriptions/${workloadSubsId}/resourceGroups/${computeObjectsRgName}/providers/Microsoft.Compute/availabilitySets/${availabilitySetNamePrefix}-${padLeft(((1 + (i + sessionHostCountIndex) / maxAvailabilitySetMembersCount)), 3, '0')}'
         osType: 'Windows'
@@ -244,7 +245,7 @@ module sessionHosts '../../../../../carml/1.3.0/Microsoft.Compute/virtualMachine
 }]
 
 // Introduce wait for session hosts to be ready.
-module sessionHostsWait '../../../../../carml/1.3.0/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module sessionHostsWait '../../../../../carml/1.4.0/Resources/deploymentScripts/main.bicep' = {
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     name: 'Session-Hosts-Wait-${time}'
     params: {
@@ -267,7 +268,7 @@ module sessionHostsWait '../../../../../carml/1.3.0/Microsoft.Resources/deployme
 } 
 
 // Add antimalware extension to session host.
-module sessionHostsAntimalwareExtension '../../../../../carml/1.3.0/Microsoft.Compute/virtualMachines/extensions/deploy.bicep' = [for i in range(1, sessionHostsCount): {
+module sessionHostsAntimalwareExtension '../../../../../carml/1.4.0/Compute/virtualMachines/extensions/main.bicep' = [for i in range(1, sessionHostsCount): {
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     name: 'SH-Antimalware-${padLeft((i + sessionHostCountIndex), 3, '0')}-${time}'
     params: {
@@ -302,7 +303,7 @@ module sessionHostsAntimalwareExtension '../../../../../carml/1.3.0/Microsoft.Co
 }]
 
 // Introduce wait for antimalware extension to complete to be ready.
-module antimalwareExtensionWait '../../../../../carml/1.3.0/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module antimalwareExtensionWait '../../../../../carml/1.4.0/Resources/deploymentScripts/main.bicep' = {
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     name: 'Antimalware-Extension-Wait-${time}'
     params: {
@@ -331,7 +332,7 @@ resource alaWorkspaceGet 'Microsoft.OperationalInsights/workspaces@2021-06-01' e
 }
 
 // Add monitoring extension to session host.
-module sessionHostsMonitoring '../../../../../carml/1.3.0/Microsoft.Compute/virtualMachines/extensions/deploy.bicep' = [for i in range(1, sessionHostsCount): if (deployMonitoring) {
+module sessionHostsMonitoring '../../../../../carml/1.4.0/Compute/virtualMachines/extensions/main.bicep' = [for i in range(1, sessionHostsCount): if (deployMonitoring) {
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     name: 'SH-Monitoring-${padLeft((i + sessionHostCountIndex), 3, '0')}-${time}'
     params: {
@@ -358,7 +359,7 @@ module sessionHostsMonitoring '../../../../../carml/1.3.0/Microsoft.Compute/virt
 }]
 
 // Introduce wait for antimalware extension to complete to be ready.
-module sessionHostsMonitoringWait '../../../../../carml/1.3.0/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module sessionHostsMonitoringWait '../../../../../carml/1.4.0/Resources/deploymentScripts/main.bicep' = {
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     name: 'SH-Monitoring-Wait-${time}'
     params: {

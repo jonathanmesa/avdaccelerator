@@ -52,7 +52,7 @@ var varCustomPolicySetDefinitions = {
 
 // Storage account for NSG flow logs. If blank value passed - then to 
 
-module deployStgAccountForFlowLogs '../../../../carml/1.3.0/Microsoft.Storage/storageAccounts/deploy.bicep' = if (empty(stgAccountForFlowLogsId)) {
+module deployStgAccountForFlowLogs '../../../../carml/1.4.0/Storage/storageAccounts/main.bicep' = if (empty(stgAccountForFlowLogsId)) {
 scope: resourceGroup ('${monitoringRgName}')
 name: (length('Deploy-Stg-Account-for-Flow-Logs-${stgAccountForFlowLogsName}-${time}') > 64) ? take('Deploy-Stg-Account-for-Flow-Logs-${stgAccountForFlowLogsName}-${time}',64) : 'Deploy-Stg-Account-for-Flow-Logs-${stgAccountForFlowLogsName}-${time}'
 params: {
@@ -71,7 +71,7 @@ params: {
 
 // Policy set definition.
  
-module networkingPolicySetDefinition '../../../../carml/1.3.0/Microsoft.Authorization/policySetDefinitions/subscription/deploy.bicep' = {
+module networkingPolicySetDefinition '../../../../carml/1.4.0/Authorization/policySetDefinitions/subscription/main.bicep' = {
   scope: subscription('${workloadSubsId}')
   name: (length('NetPolicySetDefini-${time}') > 64) ? take('AVD-Network-Policy-Set-Definition-${time}',64) : 'AVD-Network-Policy-Set-Definition-${time}'
   params: {
@@ -88,7 +88,7 @@ module networkingPolicySetDefinition '../../../../carml/1.3.0/Microsoft.Authoriz
 }
 
 // Policy set assignment.
-module networkingPolicySetDefinitionAssignment '../../../../carml/1.3.0/Microsoft.Authorization/policyAssignments/subscription/deploy.bicep' = {
+module networkingPolicySetDefinitionAssignment '../../../../carml/1.4.0/Authorization/policyAssignments/subscription/main.bicep' = {
   scope: subscription('${workloadSubsId}')
   name: (length('NetPolicySetAssign-${time}') > 64) ? take('AVD-NetPolicySetAssign-${time}',64) : 'AVD-NetPolicySetAssign-${time}'
   params: {

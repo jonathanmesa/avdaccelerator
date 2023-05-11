@@ -183,7 +183,7 @@ resource avdWrklKeyVaultget 'Microsoft.KeyVault/vaults@2021-06-01-preview' exist
 }
 
 // Provision the storage account and Azure Files.
-module storageAndFile '../../../../carml/1.3.0/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module storageAndFile '../../../../carml/1.4.0/Storage/storageAccounts/main.bicep' = {
     scope: resourceGroup('${workloadSubsId}', '${storageObjectsRgName}')
     name: 'Storage-${storagePurpose}-${time}'
     params: {
@@ -256,7 +256,7 @@ module storageAndFile '../../../../carml/1.3.0/Microsoft.Storage/storageAccounts
 //}
 
 // Provision temporary VM and add it to domain.
-module managementVm '../../../../carml/1.3.0/Microsoft.Compute/virtualMachines/deploy.bicep' = {
+module managementVm '../../../../carml/1.4.0/Compute/virtualMachines/main.bicep' = {
     scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
     name: 'Management-VM-${time}'
     params: {
@@ -268,7 +268,6 @@ module managementVm '../../../../carml/1.3.0/Microsoft.Compute/virtualMachines/d
             '${storageManagedIdentityResourceId}': {}
         }
         encryptionAtHost: encryptionAtHost
-        availabilityZone: []
         osType: 'Windows'
         //licenseType: 'Windows_Client'
         vmSize: sessionHostsSize
@@ -328,7 +327,7 @@ module managementVm '../../../../carml/1.3.0/Microsoft.Compute/virtualMachines/d
 }
 
 // Introduce wait for management VM to be ready.
-module managementVmWait '../../../../carml/1.3.0/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module managementVmWait '../../../../carml/1.4.0/Resources/deploymentScripts/main.bicep' = {
     scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
     name: 'Management-VM-Wait-${time}'
     params: {

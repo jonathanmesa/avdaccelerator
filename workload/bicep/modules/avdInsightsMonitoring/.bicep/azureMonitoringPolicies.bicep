@@ -120,7 +120,7 @@ var varCustomPolicySetDefinitions = {
 // =========== //
 
 // Policy definitions.
-module policyDefinitions '../../../../../carml/1.3.0/Microsoft.Authorization/policyDefinitions/subscription/deploy.bicep' = [for customPolicyDefinition in varCustomPolicyDefinitions: {
+module policyDefinitions '../../../../../carml/1.4.0/Authorization/policyDefinitions/subscription/main.bicep' = [for customPolicyDefinition in varCustomPolicyDefinitions: {
   scope: subscription('${workloadSubsId}')
   name: (length('${customPolicyDefinition.libDefinition.name}-${time}') > 64) ? take('${customPolicyDefinition.libDefinition.name}-${time}', 64) : '${customPolicyDefinition.libDefinition.name}-${time}'
   //name: customPolicyDefinition.libDefinition.properties.displayName
@@ -136,7 +136,7 @@ module policyDefinitions '../../../../../carml/1.3.0/Microsoft.Authorization/pol
 }]
 
 // Policy set definition.
-module policySetDefinitions '../../../../../carml/1.3.0/Microsoft.Authorization/policySetDefinitions/subscription/deploy.bicep' = {
+module policySetDefinitions '../../../../../carml/1.4.0/Authorization/policySetDefinitions/subscription/main.bicep' = {
   scope: subscription('${workloadSubsId}')
   name: 'Policy-Set-Definition-${time}'
   params: {
@@ -159,7 +159,7 @@ module policySetDefinitions '../../../../../carml/1.3.0/Microsoft.Authorization/
 }
 
 // Policy set assignment.
-module policySetassignment '../../../../../carml/1.3.0/Microsoft.Authorization/policyAssignments/subscription/deploy.bicep' = {
+module policySetassignment '../../../../../carml/1.4.0/Authorization/policyAssignments/subscription/main.bicep' = {
   scope: subscription('${workloadSubsId}')
   name: 'Policy-Set-Assignment-${time}'
   params: {

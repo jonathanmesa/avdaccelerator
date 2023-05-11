@@ -39,14 +39,14 @@ param time string = utcNow()
 // =========== //
 
 // Availability set.
-module availabilitySet '../../../../../carml/1.3.0/Microsoft.Compute/availabilitySets/deploy.bicep' = [for i in range(1, availabilitySetCount): {
+module availabilitySet '../../../../../carml/1.4.0/Compute/availabilitySets/main.bicep' = [for i in range(1, availabilitySetCount): {
     name: 'Availability-Set-${i}-${time}'
     scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
     params: {
         name: '${availabilitySetNamePrefix}-${padLeft(i, 3, '0')}'
         location: sessionHostLocation
-        availabilitySetFaultDomain: availabilitySetFaultDomainCount
-        availabilitySetUpdateDomain: availabilitySetUpdateDomainCount
+        platformFaultDomainCount: availabilitySetFaultDomainCount
+        platformUpdateDomainCount: availabilitySetUpdateDomainCount
         tags: tags
     }
 }]
