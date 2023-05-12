@@ -869,7 +869,7 @@ resource telemetrydeployment 'Microsoft.Resources/deployments@2021-04-01' = if (
 // Resource groups.
 // Compute, service objects, network.
 // Network.
-module baselineNetworkResourceGroup '../../carml/1.3.0/Microsoft.Resources/resourceGroups/deploy.bicep' = if (createAvdVnet) {
+module baselineNetworkResourceGroup '../../carml/1.4.0/Resources/resourceGroups/main.bicep' = if (createAvdVnet) {
     scope: subscription(avdWorkloadSubsId)
     name: 'Deploy-${varNetworkObjectsRgName}-${time}'
     params: {
@@ -884,7 +884,7 @@ module baselineNetworkResourceGroup '../../carml/1.3.0/Microsoft.Resources/resou
 }
 
 // Compute, service objects
-module baselineResourceGroups '../../carml/1.3.0/Microsoft.Resources/resourceGroups/deploy.bicep' = [for resourceGroup in resourceGroups: {
+module baselineResourceGroups '../../carml/1.4.0/Resources/resourceGroups/main.bicep' = [for resourceGroup in resourceGroups: {
     scope: subscription(avdWorkloadSubsId)
     name: 'Deploy-AVD-${resourceGroup.purpose}-${time}'
     params: {
@@ -899,7 +899,7 @@ module baselineResourceGroups '../../carml/1.3.0/Microsoft.Resources/resourceGro
 }]
 
 // Storage.
-module baselineStorageResourceGroup '../../carml/1.3.0/Microsoft.Resources/resourceGroups/deploy.bicep' = if (varCreateStorageDeployment && (avdIdentityServiceProvider != 'AAD')) {
+module baselineStorageResourceGroup '../../carml/1.4.0/Resources/resourceGroups/main.bicep' = if (varCreateStorageDeployment && (avdIdentityServiceProvider != 'AAD')) {
     scope: subscription(avdWorkloadSubsId)
     name: 'Deploy-${varStorageObjectsRgName}-${time}'
     params: {
@@ -1098,7 +1098,7 @@ module managedIdentitiesRoleAssign './modules/identity/deploy.bicep' = {
 }
 
 // Key vault.
-module wrklKeyVault '../../carml/1.3.0/Microsoft.KeyVault/vaults/deploy.bicep' = if (avdDeploySessionHosts) {
+module wrklKeyVault '../../carml/1.4.0/KeyVault/vaults/main.bicep' = if (avdDeploySessionHosts) {
     scope: resourceGroup('${avdWorkloadSubsId}', '${varServiceObjectsRgName}')
     name: 'Workload-KeyVault-${time}'
     params: {

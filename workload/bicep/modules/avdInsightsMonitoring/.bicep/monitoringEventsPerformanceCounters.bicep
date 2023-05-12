@@ -418,7 +418,7 @@ var varWindowsPerformanceCounters = [
 // =========== //
 // OS seetings
 //@batchSize(1)
-module osEvents '../../../../../carml/1.3.0/Microsoft.OperationalInsights/workspaces/dataSources/deploy.bicep' = [for (varWindowsEvent, i) in varWindowsEvents: {
+module osEvents '../../../../../carml/1.4.0/OperationalInsights/workspaces/dataSources/main.bicep' = [for (varWindowsEvent, i) in varWindowsEvents: {
   scope: resourceGroup('${varOsSettingsAlaWorkspaceSubId}', '${varOsSettingsAlaWorkspaceRgName}')
   name: 'Monitoring-OS-Events-${i}-${time}'
   params: {
@@ -433,7 +433,7 @@ module osEvents '../../../../../carml/1.3.0/Microsoft.OperationalInsights/worksp
 }]
 
 //@batchSize(1)
-module avdOsPerformanceCounters '../../../../../carml/1.3.0/Microsoft.OperationalInsights/workspaces/dataSources/deploy.bicep' = [for (varWindowsPerformanceCounter, i) in varWindowsPerformanceCounters: {
+module avdOsPerformanceCounters '../../../../../carml/1.4.0/OperationalInsights/workspaces/dataSources/main.bicep' = [for (varWindowsPerformanceCounter, i) in varWindowsPerformanceCounters: {
   scope: resourceGroup('${varOsSettingsAlaWorkspaceSubId}', '${varOsSettingsAlaWorkspaceRgName}')
   name: 'Monitoring-OS-Performance-Counters-${i}-${time}'
   params: {

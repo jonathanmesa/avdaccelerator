@@ -68,7 +68,7 @@ param time string = utcNow()
 // =========== //
 
 // Managed identity for fslogix/msix app attach
-module managedIdentity '../../../../carml/1.3.0/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
+module managedIdentity '../../../../carml/1.4.0/ManagedIdentity/userAssignedIdentities/main.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
   scope: resourceGroup('${workloadSubsId}', '${storageObjectsRgName}')
   name: 'Managed-Identity-${time}'
   params: {
@@ -79,7 +79,7 @@ module managedIdentity '../../../../carml/1.3.0/Microsoft.ManagedIdentity/userAs
 }
 
 // Introduce wait for management VM to be ready.
-module managedIdentityWait '../../../../carml/1.3.0/Microsoft.Resources/deploymentScripts/deploy.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
+module managedIdentityWait '../../../../carml/1.4.0/Resources/deploymentScripts/main.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
   scope: resourceGroup('${workloadSubsId}', '${storageObjectsRgName}')
   name: 'Managed-Identity-Wait-${time}'
   params: {
@@ -103,7 +103,7 @@ module managedIdentityWait '../../../../carml/1.3.0/Microsoft.Resources/deployme
 
 // RBAC role Assignments.
 // Start VM on connect compute RG.
-module startVMonConnectRoleAssignCompute '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = if (enableStartVmOnConnect && !deployScalingPlan) {
+module startVMonConnectRoleAssignCompute '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' = if (enableStartVmOnConnect && !deployScalingPlan) {
   name: 'Start-OnConnect-RolAssignComp-${time}'
   scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
   params: {
@@ -114,7 +114,7 @@ module startVMonConnectRoleAssignCompute '../../../../carml/1.3.0/Microsoft.Auth
 
 
 // Start VM on connect service objects RG.
-module startVMonConnectRoleAssignServiceObjects '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = if (enableStartVmOnConnect && !deployScalingPlan) {
+module startVMonConnectRoleAssignServiceObjects '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' = if (enableStartVmOnConnect && !deployScalingPlan) {
   name: 'Start-OnConnect-RolAssignServ-${time}'
   scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
 
@@ -125,7 +125,7 @@ module startVMonConnectRoleAssignServiceObjects '../../../../carml/1.3.0/Microso
 }
 
 // Storage contributor.
-module contributorRoleAssign '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
+module contributorRoleAssign '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
   name: 'UserAIdentity-ContributorRoleAssign-${time}'
   scope: resourceGroup('${workloadSubsId}', '${storageObjectsRgName}')
   params: {
@@ -137,7 +137,7 @@ module contributorRoleAssign '../../../../carml/1.3.0/Microsoft.Authorization/ro
   ]
 }
 // Storage reader.
-module readerRoleAssign '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
+module readerRoleAssign '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' = if (createStorageDeployment && (identityServiceProvider != 'AAD')) {
   name: 'Storage-UserAIdentity-ReaderRoleAssign-${time}'
   scope: resourceGroup('${workloadSubsId}', '${storageObjectsRgName}')
   params: {
@@ -150,7 +150,7 @@ module readerRoleAssign '../../../../carml/1.3.0/Microsoft.Authorization/roleAss
 }
 
 // Scaling plan compute RG.
-module scalingPlanRoleAssignCompute '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = if (deployScalingPlan) {
+module scalingPlanRoleAssignCompute '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' = if (deployScalingPlan) {
   name: 'Scaling-Plan-Assign-Compute-${time}'
   scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
   params: {
@@ -161,7 +161,7 @@ module scalingPlanRoleAssignCompute '../../../../carml/1.3.0/Microsoft.Authoriza
 }
 
 // Scaling plan service objects RG.
-module scalingPlanRoleAssignServiceObjects '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = if (deployScalingPlan) {
+module scalingPlanRoleAssignServiceObjects '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' = if (deployScalingPlan) {
   name: 'Scaling-Plan-Assign-Service-${time}'
   scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
   params: {
@@ -172,7 +172,7 @@ module scalingPlanRoleAssignServiceObjects '../../../../carml/1.3.0/Microsoft.Au
 }
 
 // VM AAD access roles compute RG.
-module aadIdentityLoginAccessCompute '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' =  [for avdApplicationGropupIdentityId in applicationGroupIdentitiesIds: if (identityServiceProvider == 'AAD' && !empty(applicationGroupIdentitiesIds)) {
+module aadIdentityLoginAccessCompute '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' =  [for avdApplicationGropupIdentityId in applicationGroupIdentitiesIds: if (identityServiceProvider == 'AAD' && !empty(applicationGroupIdentitiesIds)) {
   name: 'AAD-VM-Role-AssignComp-${take('${avdApplicationGropupIdentityId}', 6)}-${time}'
   scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
   params: {
@@ -183,7 +183,7 @@ module aadIdentityLoginAccessCompute '../../../../carml/1.3.0/Microsoft.Authoriz
 }]
 
 // VM AAD access roles service objects RG.
-module aadIdentityLoginAccessServiceObjects '../../../../carml/1.3.0/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' =  [for avdApplicationGropupIdentityId in applicationGroupIdentitiesIds: if (identityServiceProvider == 'AAD' && !empty(applicationGroupIdentitiesIds)) {
+module aadIdentityLoginAccessServiceObjects '../../../../carml/1.4.0/Authorization/roleAssignments/resourceGroup/main.bicep' =  [for avdApplicationGropupIdentityId in applicationGroupIdentitiesIds: if (identityServiceProvider == 'AAD' && !empty(applicationGroupIdentitiesIds)) {
   name: 'AAD-VM-Role-AssignServ-${take('${avdApplicationGropupIdentityId}', 6)}-${time}'
   scope: resourceGroup('${workloadSubsId}', '${computeObjectsRgName}')
   params: {

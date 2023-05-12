@@ -228,7 +228,7 @@ var varScalingPlanDiagnostic = [
 // =========== //
 
 // Hostpool.
-module hostPool '../../../../carml/1.3.0/Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
+module hostPool '../../../../carml/1.4.0/DesktopVirtualization/hostpools/main.bicep' = {
   scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
   name: 'HostPool-${time}'
   params: {
@@ -249,7 +249,7 @@ module hostPool '../../../../carml/1.3.0/Microsoft.DesktopVirtualization/hostpoo
 }
 
 // Application groups.
-module applicationGroups '../../../../carml/1.3.0/Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = [for applicationGroup in varFinalApplicationGroups: {
+module applicationGroups '../../../../carml/1.4.0/DesktopVirtualization/applicationgroups/main.bicep' = [for applicationGroup in varFinalApplicationGroups: {
   scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
   name: 'Application-Group-${applicationGroup.name}-${time}'
   params: {
@@ -277,7 +277,7 @@ module applicationGroups '../../../../carml/1.3.0/Microsoft.DesktopVirtualizatio
 }]
 
 // Workspace.
-module workSpace '../../../../carml/1.3.0/Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
+module workSpace '../../../../carml/1.4.0/DesktopVirtualization/workspaces/main.bicep' = {
   scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
   name: 'Workspace-${time}'
   params: {
@@ -302,7 +302,7 @@ module workSpace '../../../../carml/1.3.0/Microsoft.DesktopVirtualization/worksp
 }
 
 // Scaling plan.
-module scalingPlan '../../../../carml/1.3.0/Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' =  if (deployScalingPlan && (hostPoolType == 'Pooled'))  {
+module scalingPlan '../../../../carml/1.4.0/DesktopVirtualization/scalingplans/main.bicep' =  if (deployScalingPlan && (hostPoolType == 'Pooled'))  {
   scope: resourceGroup('${workloadSubsId}', '${serviceObjectsRgName}')
   name: 'Scaling-Plan-${time}'
   params: {
