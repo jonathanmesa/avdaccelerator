@@ -383,7 +383,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 module vm_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
   name: '${uniqueString(deployment().name, location)}-VM-Nic-${index}'
   params: {
-    networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
+    networkInterfaceName: '${nicConfiguration.nicPrefix}${name}'
     virtualMachineName: name
     location: location
     tags: tags
@@ -475,7 +475,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
           deleteOption: contains(nicConfiguration, 'deleteOption') ? nicConfiguration.deleteOption : 'Delete'
           primary: index == 0 ? true : false
         }
-        id: az.resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
+        id: az.resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicPrefix}')
       }]
     }
     diagnosticsProfile: {

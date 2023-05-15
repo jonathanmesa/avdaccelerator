@@ -285,7 +285,7 @@ module managementVm '../../../../carml/1.4.0/Compute/virtualMachines/main.bicep'
         adminPassword: avdWrklKeyVaultget.getSecret('vmLocalUserPassword')
         nicConfigurations: [
             {
-                nicSuffix: 'nic-001-'
+                nicPrefix: 'nic-01-'
                 deleteOption: 'Delete'
                 enableAcceleratedNetworking: enableAcceleratedNetworking
                 ipConfigurations: createAvdVnet ? [
