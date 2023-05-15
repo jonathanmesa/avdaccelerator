@@ -189,7 +189,7 @@ module sessionHosts '../../../../../carml/1.4.0/Compute/virtualMachines/main.bic
         adminPassword: wrklKeyVaultget.getSecret('vmLocalUserPassword')
         nicConfigurations: [
             {
-                nicSuffix: 'nic-01-'
+                nicPrefix: 'nic-01-'
                 deleteOption: 'Delete'
                 enableAcceleratedNetworking: enableAcceleratedNetworking
                 ipConfigurations: createAvdVnet ? [
